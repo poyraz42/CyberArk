@@ -1,0 +1,72 @@
+<UserControl x:Class="VaultDashboard.App.Views.Pages.UsersGroupsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:vm="clr-namespace:VaultDashboard.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vm:UsersGroupsViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Users &amp; Groups" Style="{StaticResource SectionHeaderTextStyle}" />
+
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CardPanelStyle}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="Enabled vs. disabled users" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:PieChart Series="{Binding EnabledVsDisabledSeries}" Height="220" LegendPosition="Right" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardPanelStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Users by source" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:PieChart Series="{Binding SourceBreakdownSeries}" Height="220" LegendPosition="Right" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CardPanelStyle}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="Users" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <DataGrid ItemsSource="{Binding Users}" AutoGenerateColumns="False" IsReadOnly="True"
+                                  MaxHeight="420" GridLinesVisibility="None" HeadersVisibility="Column">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="160" />
+                                <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="90" />
+                                <DataGridTextColumn Header="Type" Binding="{Binding UserType}" Width="110" />
+                                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding Enabled}" Width="70" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardPanelStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Groups" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <DataGrid ItemsSource="{Binding Groups}" AutoGenerateColumns="False" IsReadOnly="True"
+                                  MaxHeight="420" GridLinesVisibility="None" HeadersVisibility="Column">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Group name" Binding="{Binding GroupName}" Width="180" />
+                                <DataGridTextColumn Header="Type" Binding="{Binding GroupType}" Width="100" />
+                                <DataGridTextColumn Header="Members" Binding="{Binding MembersCount}" Width="80" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

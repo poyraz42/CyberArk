@@ -1,0 +1,51 @@
+<UserControl x:Class="VaultDashboard.App.Views.Pages.PlatformsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:vm="clr-namespace:VaultDashboard.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vm:PlatformsViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Platforms" Style="{StaticResource SectionHeaderTextStyle}" />
+
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CardPanelStyle}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="Active vs. disabled" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:PieChart Series="{Binding ActiveVsDisabledSeries}" Height="240" LegendPosition="Right" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardPanelStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Password rotation interval" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:CartesianChart Series="{Binding RotationIntervalSeries}" XAxes="{Binding RotationIntervalXAxes}" Height="240" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource CardPanelStyle}">
+                <DataGrid ItemsSource="{Binding Platforms}" AutoGenerateColumns="False" IsReadOnly="True"
+                          MaxHeight="420" GridLinesVisibility="None" HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Platform ID" Binding="{Binding PlatformId}" Width="220" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" />
+                        <DataGridTextColumn Header="System type" Binding="{Binding SystemType}" Width="140" />
+                        <DataGridCheckBoxColumn Header="Active" Binding="{Binding Active}" Width="70" />
+                        <DataGridTextColumn Header="Accounts" Binding="{Binding AccountsCount}" Width="90" />
+                        <DataGridCheckBoxColumn Header="Periodic change" Binding="{Binding PeriodicPasswordChangeEnabled}" Width="120" />
+                        <DataGridTextColumn Header="Change every (days)" Binding="{Binding PasswordChangeIntervalDays}" Width="150" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

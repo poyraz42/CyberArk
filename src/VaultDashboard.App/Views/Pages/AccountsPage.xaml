@@ -1,0 +1,51 @@
+<UserControl x:Class="VaultDashboard.App.Views.Pages.AccountsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:vm="clr-namespace:VaultDashboard.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vm:AccountsViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Accounts" Style="{StaticResource SectionHeaderTextStyle}" />
+
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CardPanelStyle}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="Top 10 platforms by account count" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:CartesianChart Series="{Binding TopPlatformsSeries}" XAxes="{Binding TopPlatformsXAxes}" Height="240" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardPanelStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Top 10 safes by account count" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:CartesianChart Series="{Binding TopSafesSeries}" XAxes="{Binding TopSafesXAxes}" Height="240" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource CardPanelStyle}">
+                <DataGrid ItemsSource="{Binding Accounts}" AutoGenerateColumns="False" IsReadOnly="True"
+                          MaxHeight="420" GridLinesVisibility="None" HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="220" />
+                        <DataGridTextColumn Header="Safe" Binding="{Binding SafeName}" Width="180" />
+                        <DataGridTextColumn Header="Username" Binding="{Binding UserName}" Width="140" />
+                        <DataGridTextColumn Header="Address" Binding="{Binding Address}" Width="160" />
+                        <DataGridTextColumn Header="Platform" Binding="{Binding PlatformId}" Width="160" />
+                        <DataGridCheckBoxColumn Header="Managed" Binding="{Binding AutomaticManagementEnabled}" Width="80" />
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

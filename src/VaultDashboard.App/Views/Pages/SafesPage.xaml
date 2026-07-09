@@ -1,0 +1,52 @@
+<UserControl x:Class="VaultDashboard.App.Views.Pages.SafesPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:vm="clr-namespace:VaultDashboard.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vm:SafesViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="Safes" Style="{StaticResource SectionHeaderTextStyle}" />
+
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource CardPanelStyle}" Margin="0,0,12,0">
+                    <StackPanel>
+                        <TextBlock Text="Retention distribution" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:CartesianChart Series="{Binding RetentionDistributionSeries}"
+                                             XAxes="{Binding RetentionDistributionXAxes}" Height="240" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardPanelStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Safes by managing CPM (top 8)" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                        <lvc:PieChart Series="{Binding ManagingCpmSeries}" Height="240" LegendPosition="Right" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource CardPanelStyle}">
+                <DataGrid ItemsSource="{Binding Safes}" AutoGenerateColumns="False" IsReadOnly="True"
+                          MaxHeight="420" GridLinesVisibility="None" HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Safe name" Binding="{Binding SafeName}" Width="220" />
+                        <DataGridTextColumn Header="Managing CPM" Binding="{Binding ManagingCpm}" Width="160" />
+                        <DataGridTextColumn Header="Accounts" Binding="{Binding AccountsCount}" Width="90" />
+                        <DataGridTextColumn Header="Version retention" Binding="{Binding NumberOfVersionsRetention}" Width="130" />
+                        <DataGridTextColumn Header="Day retention" Binding="{Binding NumberOfDaysRetention}" Width="120" />
+                        <DataGridCheckBoxColumn Header="OLAC" Binding="{Binding OlacEnabled}" Width="70" />
+                        <DataGridTextColumn Header="Source" Binding="{Binding DataSource}" Width="80" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

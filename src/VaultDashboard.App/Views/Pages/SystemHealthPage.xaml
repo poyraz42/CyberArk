@@ -1,0 +1,35 @@
+<UserControl x:Class="VaultDashboard.App.Views.Pages.SystemHealthPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:vm="clr-namespace:VaultDashboard.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vm:SystemHealthViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="System Health" Style="{StaticResource SectionHeaderTextStyle}" />
+
+            <Border Style="{StaticResource CardPanelStyle}" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Connected vs. disconnected components" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                    <lvc:CartesianChart Series="{Binding ConnectedVsDisconnectedSeries}"
+                                         XAxes="{Binding ConnectedVsDisconnectedXAxes}" Height="280" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardPanelStyle}">
+                <DataGrid ItemsSource="{Binding Components}" AutoGenerateColumns="False" IsReadOnly="True"
+                          MaxHeight="420" GridLinesVisibility="None" HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Component type" Binding="{Binding ComponentType}" Width="200" />
+                        <DataGridTextColumn Header="Connected" Binding="{Binding ConnectedCount}" Width="100" />
+                        <DataGridTextColumn Header="Disconnected" Binding="{Binding DisconnectedCount}" Width="110" />
+                        <DataGridTextColumn Header="Total" Binding="{Binding TotalCount}" Width="80" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

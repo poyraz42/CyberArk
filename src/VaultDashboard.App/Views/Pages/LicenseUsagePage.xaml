@@ -1,0 +1,50 @@
+<UserControl x:Class="VaultDashboard.App.Views.Pages.LicenseUsagePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:vm="clr-namespace:VaultDashboard.App.ViewModels.Pages"
+             d:DataContext="{d:DesignInstance Type=vm:LicenseUsageViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <TextBlock Text="License Usage" Style="{StaticResource SectionHeaderTextStyle}" />
+
+            <Border Style="{StaticResource CardPanelStyle}" Margin="0,0,0,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Style="{StaticResource SubtleTextStyle}"
+                               VerticalAlignment="Center" TextWrapping="Wrap" />
+                    <ui:Button Grid.Column="1" Content="Download report" Appearance="Primary"
+                               Command="{Binding DownloadReportCommand}" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource CardPanelStyle}" Margin="0,0,0,20"
+                    Visibility="{Binding UsageSeries.Length, Converter={StaticResource CountToVisibilityConverter}}">
+                <StackPanel>
+                    <TextBlock Text="Used vs. maximum, per licensed object" Style="{StaticResource SubtleTextStyle}" Margin="0,0,0,8" />
+                    <lvc:CartesianChart Series="{Binding UsageSeries}" XAxes="{Binding UsageXAxes}" Height="300" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardPanelStyle}">
+                <DataGrid ItemsSource="{Binding Items}" AutoGenerateColumns="False" IsReadOnly="True"
+                          MaxHeight="360" GridLinesVisibility="None" HeadersVisibility="Column">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Licensed object" Binding="{Binding LicensedObject}" Width="220" />
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*" />
+                        <DataGridTextColumn Header="Used" Binding="{Binding Used}" Width="80" />
+                        <DataGridTextColumn Header="Maximum" Binding="{Binding Maximum}" Width="90" />
+                        <DataGridTextColumn Header="Utilization %" Binding="{Binding UtilizationPercent}" Width="110" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
