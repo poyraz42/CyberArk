@@ -1,0 +1,46 @@
+name: Build and publish Windows exe
+
+on:
+  push:
+    branches: [main, "claude/**"]
+  pull_request:
+  workflow_dispatch: {}
+
+jobs:
+  build-data-layer:
+    name: Build & test data layer (cross-platform)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - run: dotnet test tests/VaultDashboard.Core.Tests
+      - run: dotnet test tests/VaultDashboard.Pvwa.Tests
+      - run: dotnet test tests/VaultDashboard.Evd.Tests
+      - run: dotnet test tests/VaultDashboard.Pacli.Tests
+
+  publish-windows-exe:
+    name: Publish self-contained Windows exe
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Publish
+        run: >
+          dotnet publish src/VaultDashboard.App/VaultDashboard.App.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:PublishReadyToRun=true
+          -p:EnableCompressionInSingleFile=true
+          -o publish
+
+      - name: Upload exe artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CyberArkVaultDashboard-win-x64
+          path: publish/CyberArkVaultDashboard.exe
+          if-no-files-found: error
