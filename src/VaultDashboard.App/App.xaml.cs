@@ -6,7 +6,7 @@ using VaultDashboard.App.ViewModels.Pages;
 using VaultDashboard.App.Views;
 using VaultDashboard.App.Views.Pages;
 using Wpf.Ui.Appearance;
-
+using Wpf.Ui.Controls;
 namespace VaultDashboard.App;
 
 public partial class App : System.Windows.Application
